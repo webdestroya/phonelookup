@@ -8,7 +8,7 @@ import (
 
 func NewClient() (tclient.BaseClient, error) {
 	c := &tclient.Client{}
-	c.Credentials = tclient.NewCredentials(viper.GetString(config.TwilioAccountSid), viper.GetString(config.TwilioAuthToken))
+	c.Credentials = tclient.NewCredentials(viper.GetString(config.TwilioUsername), viper.GetString(config.TwilioPassword))
 	c.SetTimeout(viper.GetDuration(config.TwilioTimeout))
 
 	return c, nil

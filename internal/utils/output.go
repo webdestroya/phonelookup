@@ -8,16 +8,22 @@ import (
 )
 
 var (
-	errorStyle = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.ANSIColor(31)).SetString("Error:")
+	ErrorStyle   = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("204"))
+	WarningStyle = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("192"))
 )
 
 func PrintError(err any) {
+	dispStr := ""
 	switch v := err.(type) {
 	case error:
-		fmt.Fprintln(os.Stderr, errorStyle.Render(v.Error()))
+		dispStr = v.Error()
 	case string:
-		fmt.Fprintln(os.Stderr, errorStyle.Render(v))
+		dispStr = v
+	case nil:
+		return
 	default:
-		fmt.Fprintln(os.Stderr, errorStyle.Render(fmt.Sprint(v)))
+		dispStr = fmt.Sprint(v)
 	}
+
+	fmt.Fprintln(os.Stderr, ErrorStyle.Render("Error:", dispStr))
 }

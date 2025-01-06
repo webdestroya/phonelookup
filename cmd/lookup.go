@@ -30,14 +30,16 @@ import (
 
 // lookupCmd represents the lookup command
 var lookupCmd = &cobra.Command{
-	Use:   "lookup PHONENUMBER",
+	Use:   "lookup PHONENUMBER...",
 	Short: "Lookup CallerID information for one or more phone numbers",
 	Long: `Queries Twilio LookupV2 API endpoint to gather information about a list of phone numbers
 
 By default, only the caller_name and line_type_intelligence are queried. You can add more fields if you want.
 `,
-	Args:    cobra.MinimumNArgs(1),
-	Example: `phone`,
+	Args:              cobra.MinimumNArgs(1),
+	SilenceUsage:      true,
+	PreRunE:           preRunCheckConfig,
+	CompletionOptions: cobra.CompletionOptions{},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return (lookuprunner.Runner{}).Run(cmd, args)
 	},
@@ -50,8 +52,13 @@ func init() {
 	lookupCmd.Flags().String("country", "", "ISO-3166 country code. Used if the phone number provided is in national format")
 	lookupCmd.Flags().StringSlice("fields", []string{}, "Extra fields to include (line_status, sms_pumping_risk, etc)")
 
+	lookupCmd.Flags().String("username", "", "Twilio Username")
+	lookupCmd.Flags().String("password", "", "Twilio Password")
+
 	viper.BindPFlag(config.LookupOutputJSON, lookupCmd.Flags().Lookup("json"))
 	viper.BindPFlag(config.LookupCountryCode, lookupCmd.Flags().Lookup("country"))
 	viper.BindPFlag(config.LookupExtraFields, lookupCmd.Flags().Lookup("fields"))
 
+	viper.BindPFlag(config.TwilioUsername, lookupCmd.Flags().Lookup("username"))
+	viper.BindPFlag(config.TwilioPassword, lookupCmd.Flags().Lookup("password"))
 }

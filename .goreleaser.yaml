@@ -8,6 +8,8 @@
 
 version: 2
 
+project_name: phonelookup
+
 before:
   hooks:
     - go mod tidy
@@ -20,6 +22,15 @@ builds:
       - linux
       - windows
       - darwin
+    goarch:
+      - amd64
+      - arm
+      - arm64
+    flags:
+      - -trimpath
+    ldflags:
+      - "-s -w"
+      - -X github.com/webdestroya/phonelookup/cmd.BuildVersion={{.Version}}
 
 archives:
   - format: tar.gz
@@ -35,6 +46,35 @@ archives:
     format_overrides:
       - goos: windows
         format: zip
+
+brews:
+  - name: phonelookup
+    repository:
+      owner: webdestroya
+      name: homebrew-tap
+    url_template: "https://github.com/webdestroya/phonelookup/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    homepage: "https://github.com/webdestroya/phonelookup"
+    description: "A tiny CLI utility to quickly look up CallerID info for phone numbers"
+    skip_upload: auto
+    commit_author:
+      name: cloud87bot
+      email: 114977785+cloud87bot@users.noreply.github.com
+    license: "MIT"
+
+nfpms:
+  - id: nfpm-default
+    package_name: phonelookup
+    file_name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    vendor: Mitch Dempsey
+    homepage: https://github.com/webdestroya/phonelookup
+    maintainer: Mitch Dempsey <webdestroya@users.noreply.github.com>
+    description: A tiny CLI utility to quickly look up CallerID info for phone numbers
+    license: MIT
+    section: utils
+    priority: extra
+    formats:
+      - deb
+      - rpm
 
 changelog:
   sort: asc

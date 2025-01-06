@@ -1,6 +1,11 @@
 package config
 
 const (
+	CfgName = `.phonelookup`
+	CfgType = `yml`
+)
+
+const (
 	LookupLineTypeIntelligence = `lookup.line_type_intelligence`
 	LookupCallerName           = `lookup.caller_name`
 
@@ -12,7 +17,9 @@ const (
 )
 
 const (
-	TwilioAccountSid = `twilio.account_sid`
-	TwilioAuthToken  = `twilio.auth_token`
-	TwilioTimeout    = `twilio.timeout`
+	TwilioUsername = `twilio.username`
+	TwilioPassword = `twilio.password`
+	TwilioTimeout  = `twilio.timeout`
+	// TwilioEdge       = `twilio.edge` // use env var
+	// TwilioRegion     = `twilio.region` // use env var
 )
