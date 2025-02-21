@@ -2,6 +2,12 @@
 
 Just a simple utility to return caller ID info from a phone number.
 
+## Installation
+
+```shell
+brew install webdestroya/tap/phonelookup
+```
+
 ## Usage
 
 ```
